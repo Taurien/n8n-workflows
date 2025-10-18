@@ -1,0 +1,115 @@
+{
+  "active": true,
+  "connections": {
+    "Get Table Schema": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute SQL Query": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-27T21:05:29.324Z",
+  "id": "qNwseAeGMA4IEGn2",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "MCP_Server(taurienbot_tools)",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "nuforc"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "bb0dd122-adae-4511-a506-9402e07d5588",
+      "name": "MCP Server Trigger",
+      "webhookId": "87074f6e-18db-49b9-a058-6a368a2a6b6f",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Tool #1: Get Table Schema\nPurpose: Retrieve the complete structure of the UFOS table\nWhen to use:\n\nWhen you need to understand available columns before writing a query\nUser asks about what data is available\nYou're unsure about column names or data types\nFirst time handling a new type of query",
+        "operation": "executeQuery",
+        "query": "SELECT \n    COLUMN_NAME,\n    COLUMN_TYPE,\n    IS_NULLABLE,\n    COLUMN_DEFAULT,\n    COLUMN_KEY,\n    EXTRA,\n    COLUMN_COMMENT\nFROM INFORMATION_SCHEMA.COLUMNS\nWHERE TABLE_SCHEMA = 'nuforc'\n  AND TABLE_NAME = 'UFOS'\nORDER BY ORDINAL_POSITION;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.5,
+      "position": [
+        -16,
+        224
+      ],
+      "id": "cf70148d-1f80-43d0-80cf-c69b6ebc41a8",
+      "name": "Get Table Schema",
+      "credentials": {
+        "mySql": {
+          "id": "OVkGbY9JBhQV878V",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Tool #2: Execute SQL Query\nPurpose: Run custom MySQL queries to fetch, filter, and analyze data\nWhen to use:\n\nAnswering specific user questions about UFO sightings\nFiltering data by location, date, shape, duration, etc.\nPerforming aggregations (COUNT, AVG, SUM, GROUP BY)\nSorting and limiting results\nAny data retrieval or analysis task",
+        "operation": "executeQuery",
+        "query": "{{ $fromAI(\"query\",\"SQL query\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.5,
+      "position": [
+        128,
+        224
+      ],
+      "id": "cf0d0c47-4651-4f38-8892-be59a888ac7d",
+      "name": "Execute SQL Query",
+      "credentials": {
+        "mySql": {
+          "id": "OVkGbY9JBhQV878V",
+          "name": "MySQL account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-27T21:05:29.360Z",
+      "updatedAt": "2025-09-27T21:05:29.360Z",
+      "role": "workflow:owner",
+      "workflowId": "qNwseAeGMA4IEGn2",
+      "projectId": "0wdrSzwbiONAhOXI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-18T21:10:53.000Z",
+  "versionId": "8c362c34-8fab-4c5f-8f44-f08837269f5b"
+}
