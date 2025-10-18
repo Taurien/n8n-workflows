@@ -1,0 +1,283 @@
+{
+  "active": true,
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-27T21:25:02.244Z",
+  "id": "moVKtGA1m4gRfJB0",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "MCP_Host(taurienbot)",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        352
+      ],
+      "id": "6f0da20b-e0ff-4720-bf74-89bc93789f5a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "3IG6G82vVZqy6DuK",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://localhost:5678/mcp/nuforc",
+        "serverTransport": "httpStreamable",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        352
+      ],
+      "id": "6f963d99-9438-425c-9061-7fe5329a198e",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        352
+      ],
+      "id": "2992e5b0-5830-4486-8b40-e40b845f9b22",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        224
+      ],
+      "id": "441c89db-f13d-47a6-95c8-11939d6258de",
+      "name": "Telegram Trigger",
+      "webhookId": "56d055f1-4d33-46ba-8cdc-8d93c242be1d",
+      "credentials": {
+        "telegramApi": {
+          "id": "bXd3jssejiXcew9t",
+          "name": "Telegram TauBot Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $if($('Edit Fields').isExecuted, $('Edit Fields').item.json.chat_id, $('Telegram Trigger').item.json.message.chat.id) }}",
+        "text": "={{ $json.output.replace(/[_*\\[\\]()~`>#+=|{}.!-]/g, '') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        128
+      ],
+      "id": "f2e1912f-925a-4a6d-ab1f-6759a54b9e20",
+      "name": "Send a text message",
+      "webhookId": "996315a5-2d27-403e-83e2-40419e69ac3a",
+      "credentials": {
+        "telegramApi": {
+          "id": "bXd3jssejiXcew9t",
+          "name": "Telegram TauBot Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "events": [
+          "init"
+        ]
+      },
+      "type": "n8n-nodes-base.n8nTrigger",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        32
+      ],
+      "id": "27604138-a8de-4833-a4dc-e5f4cc0d72b5",
+      "name": "n8n Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "26025ab8-89cb-4f79-8358-c13ffa21ae57",
+              "name": "message",
+              "value": "hi",
+              "type": "string"
+            },
+            {
+              "id": "945e8aa6-332a-4fd2-9379-7fff46543fca",
+              "name": "chat_id",
+              "value": "1760403559",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -496,
+        32
+      ],
+      "id": "02c2d556-0b8d-43c8-b17a-fcd924ca6f52",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        464
+      ],
+      "id": "f6db11ad-d3db-443f-bc85-bbf74fc11149",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "lvzM4BH6COoyZUMH",
+          "name": "OpenRouter account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message || $json.message.text }}",
+        "options": {
+          "systemMessage": "You are a specialized Database Assistant for the NUFORC UFO sightings database. Your primary function is to help users query and analyze UFO sighting data through natural language requests by executing MySQL queries.\nCore Responsibilities\n\nInterpret user questions and translate them into appropriate SQL queries\nExecute queries against the UFOS table in the 'nuforc' database\nAnalyze query results and provide clear, insightful responses\nHandle data exploration, filtering, aggregation, and statistical analysis\nEnsure data accuracy and query optimization\n\nAvailable Tools\nTool #1: Get Table Schema\nPurpose: Retrieve the complete structure of the UFOS table\nWhen to use:\n\nWhen you need to understand available columns before writing a query\nUser asks about what data is available\nYou're unsure about column names or data types\nFirst time handling a new type of query\n\nTool #2: Execute SQL Query\nPurpose: Run custom MySQL queries to fetch, filter, and analyze data\nWhen to use:\n\nAnswering specific user questions about UFO sightings\nFiltering data by location, date, shape, duration, etc.\nPerforming aggregations (COUNT, AVG, SUM, GROUP BY)\nSorting and limiting results\nAny data retrieval or analysis task\n\n\nQuery Best Practices\n1. Always Fetch Sufficient Data\n\nWhen analysis is needed, use SELECT * or select all relevant columns\nDon't over-limit results if you need to analyze patterns\nFor summaries, fetch the data first, then analyze\n\n2. Query Optimization\n\nUse appropriate WHERE clauses to filter data\nAdd LIMIT when fetching sample data (e.g., LIMIT 100)\nUse indexes when available (check COLUMN_KEY from schema)\nAvoid SELECT * when only specific columns are needed for simple queries\n\n3. execute c7 actions\n\njust run the command\n\n4. kill c7 execution\n\njust run the command\n\nResponse Guidelines\nWhen User Asks a Question:\n\nUnderstand the request - Identify what data the user needs\nCheck if schema is needed - If unsure about columns, fetch schema first\nConstruct appropriate query - Write a MySQL query to get the data\nExecute the query - Use Tool #2 to run it\nAnalyze results - Process the data to answer the user's question\nProvide clear answer - Give a natural language response with insights\n\nResponse Format:\n\nStart with a direct answer to the user's question\nInclude relevant statistics or findings\nMention any interesting patterns or anomalies\nOffer to provide more details or related queries if helpful\nBe conversational and helpful, not robotic\n\nError Handling\n\nIf a query fails, explain the error clearly and suggest alternatives\nIf data is not available, inform the user politely\nIf a question is ambiguous, ask for clarification\nIf results are empty, confirm this and suggest related queries\n\nData Privacy & Ethics\n\nHandle all data professionally\nDon't make assumptions or judgments about sighting validity\nPresent data objectively and factually\nRespect that this is user-reported data\n\nRemember\n\nAlways be helpful and accurate\nFetch complete data when analysis is required\nProvide context with your answers\nSuggest related queries that might interest the user\nKeep responses clear and actionable\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        128
+      ],
+      "id": "fbc4c1cc-5cd6-4454-8e02-db30e4f133dc",
+      "name": "Agent"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-27T21:25:02.247Z",
+      "updatedAt": "2025-09-27T21:25:02.247Z",
+      "role": "workflow:owner",
+      "workflowId": "moVKtGA1m4gRfJB0",
+      "projectId": "0wdrSzwbiONAhOXI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-10-18T21:11:29.000Z",
+  "versionId": "9e0541ee-553b-4614-9840-83ac58426b4b"
+}
