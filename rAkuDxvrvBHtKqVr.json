@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "n8n": {
       "main": [
@@ -271,6 +271,17 @@
           }
         ]
       ]
+    },
+    "n8n Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-18T19:16:20.609Z",
@@ -288,8 +299,8 @@
       "name": "On clicking 'execute'",
       "type": "n8n-nodes-base.manualTrigger",
       "position": [
-        816,
-        512
+        416,
+        496
       ],
       "typeVersion": 1
     },
@@ -318,8 +329,8 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        1168,
-        608
+        1024,
+        624
       ],
       "typeVersion": 1,
       "credentials": {
@@ -571,11 +582,10 @@
       "name": "Loop Over Items",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1568,
-        608
+        1392,
+        624
       ],
-      "typeVersion": 3,
-      "disabled": true
+      "typeVersion": 3
     },
     {
       "parameters": {
@@ -592,15 +602,16 @@
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "position": [
-        816,
-        704
+        528,
+        624
       ],
-      "typeVersion": 1.2
+      "typeVersion": 1.2,
+      "disabled": true
     },
     {
       "parameters": {
-        "content": "## Backup to GitHub \nThis workflow will backup all instance workflows to GitHub.\n\nThe files are saved `ID.json` for the filename.\n\n### Setup\nOpen `Globals` node and update the values below 👇\n\n- **repo.owner:** your Github username\n- **repo.name:** the name of your repository\n- **repo.path:** the folder to use within the repository. If it doesn't exist it will be created.\n\n\nIf your username was `john-doe` and your repository was called `n8n-backups` and you wanted the workflows to go into a `workflows` folder you would set:\n\n- repo.owner - john-doe\n- repo.name - n8n-backups\n- repo.path - workflows/\n\n\nThe workflow calls itself using a subworkflow, to help reduce memory usage.",
-        "height": 601,
+        "content": "### Setup\nOpen `Globals` node and update the values below\n\n- **repo.owner:** your Github username\n- **repo.name:** the name of your repository\n- **repo.path:** the folder to use within the repository. If it doesn't exist it will be created.\n",
+        "height": 185,
         "width": 371,
         "color": 4
       },
@@ -609,7 +620,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         368,
-        240
+        224
       ],
       "typeVersion": 1
     },
@@ -617,15 +628,15 @@
       "parameters": {
         "content": "## Main workflow loop",
         "height": 435,
-        "width": 886,
+        "width": 1622,
         "color": 7
       },
       "id": "26e38d41-f253-4fa2-964f-54f8b468d211",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -368,
-        320
+        368,
+        432
       ],
       "typeVersion": 1
     },
@@ -735,26 +746,11 @@
       "name": "Execute Workflow",
       "type": "n8n-nodes-base.executeWorkflow",
       "position": [
-        1776,
-        608
+        1600,
+        624
       ],
       "typeVersion": 1.2,
       "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "content": "### 💡 **Want to learn advanced n8n skills and earn money building workflows?**\n‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎Check out [Scrapes Academy](https://www.skool.com/scrapes/about?ref=21f10ad99f4d46ba9b8aaea8c9f58c34)",
-        "width": 640,
-        "color": 4
-      },
-      "id": "015a5f28-d1ff-4e3b-a303-6d143c7326b1",
-      "name": "Sticky Note16",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        768,
-        240
-      ],
-      "typeVersion": 1
     },
     {
       "parameters": {
@@ -763,8 +759,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1760,
-        480
+        1584,
+        496
       ],
       "id": "f07ac405-2124-4615-bda6-864802c601c7",
       "name": "Send a text message",
@@ -784,8 +780,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1008,
-        608
+        864,
+        624
       ],
       "id": "e0595005-4324-4374-a9ab-c49338e60e71",
       "name": "Send a text message1",
@@ -805,8 +801,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1984,
-        624
+        1808,
+        640
       ],
       "id": "df3d8886-cda7-4b16-827c-ca3633035913",
       "name": "Send a text message2",
@@ -847,11 +843,26 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        1328,
-        608
+        1184,
+        624
       ],
       "id": "ee354b72-adab-47e4-b64a-a8d6d8da04cd",
       "name": "Filter"
+    },
+    {
+      "parameters": {
+        "events": [
+          "init"
+        ]
+      },
+      "type": "n8n-nodes-base.n8nTrigger",
+      "typeVersion": 1,
+      "position": [
+        672,
+        736
+      ],
+      "id": "bd431ef4-f36e-4b61-88f1-8ee2e0bd65dc",
+      "name": "n8n Trigger"
     }
   ],
   "pinData": {},
@@ -867,7 +878,7 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-10-18T21:08:31.000Z",
-  "versionId": "01894d7e-a1b9-44c6-9189-2ea3ad0bef7c"
+  "triggerCount": 1,
+  "updatedAt": "2025-10-18T21:16:45.000Z",
+  "versionId": "f50760f3-ab3b-423c-86e9-1fce6cced931"
 }
