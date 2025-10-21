@@ -1,0 +1,691 @@
+{
+  "active": false,
+  "connections": {
+    "Check Failed Records": {
+      "main": [
+        [
+          {
+            "node": "Has Failed Records?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Failed Records?": {
+      "main": [
+        [
+          {
+            "node": "Loop Failed Records",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Last DB ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Failed Records": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Database": {
+      "main": [
+        [
+          {
+            "node": "Rate Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rate Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Failed Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Next ID": {
+      "main": [
+        [
+          {
+            "node": "Can Fetch More?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can Fetch More?": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format New Data": {
+      "main": [
+        [
+          {
+            "node": "Format Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Database": {
+      "main": [
+        [
+          {
+            "node": "Rate Limit Fresh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Check Failed Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Fetch UFO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse UFO HTML": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow1": {
+      "main": [
+        [
+          {
+            "node": "Insert Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Update Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Last DB ID": {
+      "main": [
+        []
+      ]
+    },
+    "Format Data": {
+      "main": [
+        [
+          {
+            "node": "Format New Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch UFO": {
+      "main": [
+        [
+          {
+            "node": "Parse UFO HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check Failed Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-21T18:12:27.609Z",
+  "id": "XDwXMWw9FI6dZ517",
+  "isArchived": false,
+  "meta": null,
+  "name": "Ufo Scraper",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id FROM UFOS WHERE RAW LIKE 'Could not find%' OR RAW LIKE 'Timeout error after%' OR RAW LIKE 'HTTP Error occurred%' OR RAW LIKE 'Network error after%' OR RAW LIKE 'Request Exception occurred%' OR RAW LIKE 'Failed to fetch data%' OR RAW LIKE 'Database Exception occurred%' LIMIT 100",
+        "options": {}
+      },
+      "id": "44c4067a-4796-4e3f-8c0a-2d9e634086d6",
+      "name": "Check Failed Records",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        192,
+        624
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "OVkGbY9JBhQV878V",
+          "name": "MySQL account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "has-failed-records",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "any",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b3de7938-8c67-4ed9-8513-e676103020b5",
+      "name": "Has Failed Records?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "447e53e4-92a9-4633-baa6-7c7a84926285",
+      "name": "Loop Failed Records",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        640,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "table": {
+          "value": "UFOS",
+          "mode": "list",
+          "cachedResultName": "UFOS"
+        },
+        "columnToMatchOn": "id",
+        "options": {}
+      },
+      "id": "684004e5-7c1c-4f6f-8ce3-ae43732cfe93",
+      "name": "Update Database",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        1088,
+        448
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "OVkGbY9JBhQV878V",
+          "name": "MySQL account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Wait 2-5 seconds randomly (rate limiting)\nconst waitTime = Math.floor(Math.random() * 3000) + 2000;\nawait new Promise(resolve => setTimeout(resolve, waitTime));\n\nreturn $input.all();"
+      },
+      "id": "171f69b2-3000-4fc5-8f93-67d8b787662e",
+      "name": "Rate Limit",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        528
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT MAX(id) as max_id FROM UFOS",
+        "options": {}
+      },
+      "id": "3aed82ba-33f1-44c8-be1f-ba119f206773",
+      "name": "Get Last DB ID",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        640,
+        768
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "OVkGbY9JBhQV878V",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse HTML to find the last record ID from NUFORC website\nconst html = $input.first().json.data;\n\n// Extract the current month's link and parse the first record ID\n// This is a simplified version - in production you'd use proper HTML parsing\nconst regex = /sighting\\/\\?id=(\\d+)/g;\nconst matches = [...html.matchAll(regex)];\n\nlet lastRecordId = 0;\nif (matches.length > 0) {\n  // Get the highest ID found\n  lastRecordId = Math.max(...matches.map(m => parseInt(m[1])));\n}\n\n// Get the next ID to fetch from previous node\nconst maxDbId = $('Get Last DB ID').first().json.max_id || 0;\nconst nextId = maxDbId + 1;\n\nreturn [{\n  json: {\n    next_id: nextId,\n    last_record_id: lastRecordId,\n    can_fetch: nextId <= lastRecordId\n  }\n}];"
+      },
+      "id": "161374b8-105e-420e-8f40-926683097e67",
+      "name": "Calculate Next ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "can-fetch-more",
+              "leftValue": "={{ $json.can_fetch }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2b1ca884-a7f8-4c14-8ff0-6bca7bb158eb",
+      "name": "Can Fetch More?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1088,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process extracted data and format for database\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const data = item.json;\n  \n  // Extract description (text between labels and posted date)\n  let description = '';\n  if (data.raw_html) {\n    const htmlText = data.raw_html.replace(/<[^>]*>/g, ' ');\n    const lines = htmlText.split('\\n').map(l => l.trim()).filter(l => l);\n    \n    // Find description between duration and posted\n    let capturing = false;\n    for (const line of lines) {\n      if (line.includes('Duration:')) {\n        capturing = true;\n        continue;\n      }\n      if (line.includes('Posted:')) {\n        break;\n      }\n      if (capturing && !line.match(/^(Occurred|Reported|Location|Shape|Duration):/)) {\n        description += line + ' ';\n      }\n    }\n  }\n  \n  // Build details JSON\n  const details = {};\n  if (data.location) details.location = data.location.trim();\n  if (data.shape) details.shape = data.shape.trim();\n  if (data.duration) details.duration = data.duration.trim();\n  \n  // Get the ID from previous calculation\n  const recordId = $('Calculate Next ID').first().json.next_id;\n  \n  // Format result\n  results.push({\n    json: {\n      id: recordId,\n      title: data.title ? data.title.trim() : '',\n      occurred: data.occurred ? data.occurred.trim() : null,\n      reported: data.reported ? data.reported.trim() : null,\n      details: JSON.stringify(details),\n      description: description.trim(),\n      posted: data.posted ? data.posted.replace('Posted:', '').trim() : null,\n      fetched: new Date().toISOString().slice(0, 19).replace('T', ' '),\n      RAW: data.raw_html || ''\n    }\n  });\n}\n\nreturn results;"
+      },
+      "id": "c5c1af29-1e9b-4d20-ae55-99429b3c5cb5",
+      "name": "Format New Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        1216
+      ]
+    },
+    {
+      "parameters": {
+        "table": {
+          "value": "UFOS",
+          "mode": "list",
+          "cachedResultName": "UFOS"
+        },
+        "options": {}
+      },
+      "id": "69196a6a-873c-4bca-bbac-7a03411417d6",
+      "name": "Insert Database",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        1536,
+        768
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Wait 2-5 seconds randomly (rate limiting)\nconst waitTime = Math.floor(Math.random() * 3000) + 2000;\nawait new Promise(resolve => setTimeout(resolve, waitTime));\n\nreturn $input.all();"
+      },
+      "id": "65eecfc8-ca52-4afe-9786-737b3ffced98",
+      "name": "Rate Limit Fresh",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        768
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        624
+      ],
+      "id": "67bcc337-382e-4e6a-9f9f-680e2bf78204",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process extracted data and format for database\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const data = item.json;\n  \n  // Extract description (text between labels and posted date)\n  let description = '';\n  if (data.raw_html) {\n    const htmlText = data.raw_html.replace(/<[^>]*>/g, ' ');\n    const lines = htmlText.split('\\n').map(l => l.trim()).filter(l => l);\n    \n    // Find description between duration and posted\n    let capturing = false;\n    for (const line of lines) {\n      if (line.includes('Duration:')) {\n        capturing = true;\n        continue;\n      }\n      if (line.includes('Posted:')) {\n        break;\n      }\n      if (capturing && !line.match(/^(Occurred|Reported|Location|Shape|Duration):/)) {\n        description += line + ' ';\n      }\n    }\n  }\n  \n  // Build details JSON\n  const details = {};\n  if (data.location) details.location = data.location.trim();\n  if (data.shape) details.shape = data.shape.trim();\n  if (data.duration) details.duration = data.duration.trim();\n  \n  // Format result\n  results.push({\n    json: {\n      id: data.id || $('Loop Failed Records').item.json.id,\n      title: data.title ? data.title.trim() : '',\n      occurred: data.occurred ? data.occurred.trim() : null,\n      reported: data.reported ? data.reported.trim() : null,\n      details: JSON.stringify(details),\n      description: description.trim(),\n      posted: data.posted ? data.posted.replace('Posted:', '').trim() : null,\n      fetched: new Date().toISOString().slice(0, 19).replace('T', ' '),\n      RAW: data.raw_html || ''\n    }\n  });\n}\n\nreturn results;"
+      },
+      "id": "98550d6b-392f-4753-8d06-fc318fba95e1",
+      "name": "Format Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        1216
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}",
+          "cachedResultName": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        864,
+        448
+      ],
+      "id": "e56b376f-e9c7-4851-a3dd-63e40ae95522",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        992
+      ],
+      "id": "73d25f00-aed8-41dc-acc3-47f6c4ef24aa",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const user_agents = [\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36 Edg/96.0.1054.29\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36\",\n    \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36\",\n    \"Mozilla/5.0 (iPad; CPU OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/96.0.4664.53 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.2420.81\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (X11; Linux i686; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (iPad; CPU OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36\",\n]\n\nconst randomUA = user_agents[Math.floor(Math.random() * user_agents.length)];\n\nreturn {\n  json: {\n    id: $json.id,\n    userAgent: randomUA\n}}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        992
+      ],
+      "id": "a4cf748b-b06f-4e00-ba3e-4b6b4e72f187",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "extractionValues": {
+          "values": [
+            {
+              "key": "raw_html",
+              "cssSelector": ".content-area",
+              "returnValue": "html"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3ad73c81-b38c-4120-84cd-9577e536d2cd",
+      "name": "Parse UFO HTML",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [
+        640,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}",
+          "cachedResultName": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1312,
+        768
+      ],
+      "id": "6c59f5ad-0f35-4ade-b4ce-587ef3b607c8",
+      "name": "Execute Workflow1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// n8n Code node compatible - uses ONLY plain JavaScript (no external dependencies)\n\n/**\n * Strip HTML tags and get text content\n * @param {string} html - HTML string\n * @returns {string} - Text content\n */\nfunction stripHtmlTags(html) {\n    return html.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();\n}\n\n/**\n * Extract content between two positions in HTML\n * @param {string} html - HTML string\n * @param {number} start - Start position\n * @param {number} end - End position\n * @returns {string} - Extracted content\n */\nfunction extractBetween(html, start, end) {\n    if (start === -1) return '';\n    if (end === -1) end = html.length;\n    return html.substring(start, end);\n}\n\n/**\n * Extract label-value pairs from bold tags\n * @param {string} contentArea - HTML content area\n * @returns {Object} - Object containing fields\n */\nfunction getLabelValuePairs(contentArea) {\n    const fields = {};\n    \n    // Find all <b>...</b> tags\n    const boldRegex = /<b>(.*?)<\\/b>/gi;\n    let match;\n    \n    while ((match = boldRegex.exec(contentArea)) !== null) {\n        const label = stripHtmlTags(match[1]).replace(/:$/, '').trim().toLowerCase();\n        const afterBoldPos = match.index + match[0].length;\n        \n        // Find the next <b>, <i>, or <br> tag\n        const nextBoldPos = contentArea.indexOf('<b>', afterBoldPos);\n        const nextItalicPos = contentArea.indexOf('<i>', afterBoldPos);\n        const nextBrPos = contentArea.indexOf('<br', afterBoldPos);\n        \n        // Find the closest tag\n        let endPos = contentArea.length;\n        if (nextBoldPos !== -1) endPos = Math.min(endPos, nextBoldPos);\n        if (nextItalicPos !== -1) endPos = Math.min(endPos, nextItalicPos);\n        if (nextBrPos !== -1) endPos = Math.min(endPos, nextBrPos);\n        \n        // Extract value between bold tag and next tag\n        const valueHtml = contentArea.substring(afterBoldPos, endPos);\n        const value = stripHtmlTags(valueHtml).trim();\n        \n        fields[label] = value !== '' ? value : null;\n    }\n    \n    return fields;\n}\n\n/**\n * Process raw HTML and extract UFO sighting data\n * @param {string} RAW - Raw HTML string\n * @returns {Object} - Processed sighting data\n */\nfunction processRaw(RAW) {\n    // The HTML doesn't have a content-area wrapper, work with the raw HTML directly\n    // Extract the main content (everything before the site-content div or use entire HTML)\n    let contentArea = RAW;\n    \n    // Try to extract just the relevant part (before the site-content div if it exists)\n    const siteContentMatch = RAW.match(/([\\s\\S]*?)<div[^>]*id=\"content\"[^>]*class=\"site-content/i);\n    if (siteContentMatch) {\n        contentArea = siteContentMatch[1];\n    }\n    \n    const rpt = {};\n    \n    // Extract title from h1\n    const h1Match = contentArea.match(/<h1[^>]*>(.*?)<\\/h1>/i);\n    rpt.title = h1Match ? stripHtmlTags(h1Match[1]) : null;\n    \n    // Find posted tag (italic tag starting with \"posted\")\n    let postedText = null;\n    const italicRegex = /<i[^>]*>(.*?)<\\/i>/gi;\n    let italicMatch;\n    \n    while ((italicMatch = italicRegex.exec(contentArea)) !== null) {\n        const italicContent = stripHtmlTags(italicMatch[1]);\n        if (italicContent.toLowerCase().startsWith('posted')) {\n            postedText = italicContent;\n            break;\n        }\n    }\n    \n    // Extract label-value pairs\n    const fields = getLabelValuePairs(contentArea);\n    Object.assign(rpt, fields);\n    \n    // Extract description\n    // Find the last bold tag\n    const boldMatches = [...contentArea.matchAll(/<b>.*?<\\/b>/gi)];\n    const lastBoldMatch = boldMatches.length > 0 ? boldMatches[boldMatches.length - 1] : null;\n    \n    let descHtml = '';\n    if (lastBoldMatch) {\n        const afterLastBold = lastBoldMatch.index + lastBoldMatch[0].length;\n        \n        // Find where the posted italic tag starts\n        let beforePosted = contentArea.length;\n        if (postedText) {\n            const postedMatch = contentArea.match(/<i[^>]*>posted.*?<\\/i>/i);\n            if (postedMatch) {\n                beforePosted = postedMatch.index;\n            }\n        }\n        \n        descHtml = contentArea.substring(afterLastBold, beforePosted);\n    }\n    \n    // Clean up description\n    let desc = stripHtmlTags(descHtml);\n    \n    // Remove field values from description\n    for (const v of Object.values(fields)) {\n        if (v) {\n            desc = desc.replace(v, '');\n        }\n    }\n    \n    // Normalize whitespace\n    desc = desc.replace(/\\s+/g, ' ').trim();\n    rpt.description = desc || null;\n    \n    // Extract posted date\n    if (postedText) {\n        if (postedText.toLowerCase().startsWith('posted')) {\n            const parts = postedText.split(' ');\n            postedText = parts.length > 1 ? parts.slice(1).join(' ') : null;\n        }\n        rpt.posted = postedText;\n    } else {\n        rpt.posted = null;\n    }\n    \n    // Force all keys to lowercase\n    const normalizedRpt = {};\n    for (const [k, v] of Object.entries(rpt)) {\n        normalizedRpt[k.toLowerCase()] = v;\n    }\n    \n    // Create details object (all fields except main ones)\n    const keysToRemove = [\n        'title',\n        'occurred',\n        'reported',\n        'description',\n        'posted'\n    ];\n    \n    const details = {};\n    for (const [key, value] of Object.entries(normalizedRpt)) {\n        if (!keysToRemove.includes(key)) {\n            details[key] = value;\n        }\n    }\n    \n    // Return structured object\n    return {\n      id: $('When Executed by Another Workflow').item.json.id,\n      title: normalizedRpt.title,\n      occurred: normalizedRpt.occurred,\n      reported: normalizedRpt.reported,\n      posted: normalizedRpt.posted,\n      details: details,\n      description: normalizedRpt.description,\n      fetched: DateTime.now(),\n      RAW: `<div class=\"content-area clr\" id=\"primary\">\n      ${$json.raw_html}</div>`\n    };\n}\n\n// For n8n Code node usage:\nconst RAW = $json.raw_html;\nconst result = processRaw(RAW);\n// return {res:result};\nreturn {result};\n\n// Export for testing/external use\nif (typeof module !== 'undefined' && module.exports) {\n    module.exports = { processRaw, getLabelValuePairs };\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        992
+      ],
+      "id": "b7946d5a-1aa2-4fa9-8a0b-8aa4b8213dc5",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d513345-6484-431f-afb7-7cf045c90f4f",
+              "name": "Done",
+              "type": "boolean",
+              "value": true
+            },
+            {
+              "id": "54cba29f-0b0f-4f9a-8324-040cbc6c5f91",
+              "name": "data",
+              "value": "={{ $json.result }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ad072196-d1af-479e-8eb9-054e66e7e6dd",
+      "name": "Return",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1088,
+        992
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "url": "=https://nuforc.org/sighting/?id={{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "={{ $json.userAgent }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "maxRedirects": 5
+            }
+          },
+          "proxy": "http://127.0.0.1:8888",
+          "timeout": 30000
+        }
+      },
+      "id": "d55ba23b-aa44-4190-bc16-d09ebad5f54e",
+      "name": "Fetch UFO",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "events": [
+          "init"
+        ]
+      },
+      "type": "n8n-nodes-base.n8nTrigger",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        752
+      ],
+      "id": "05d3a8e4-fa70-4af5-8f52-8ddd5f830eab",
+      "name": "n8n Trigger",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-21T18:12:27.611Z",
+      "updatedAt": "2025-10-21T18:12:27.611Z",
+      "role": "workflow:owner",
+      "workflowId": "XDwXMWw9FI6dZ517",
+      "projectId": "0wdrSzwbiONAhOXI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-21T19:14:41.000Z",
+  "versionId": "8348d6f8-3389-42b0-bcc2-b847a0ebdb25"
+}
