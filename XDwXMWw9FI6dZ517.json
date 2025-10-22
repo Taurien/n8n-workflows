@@ -32,7 +32,13 @@
     },
     "Loop Failed Records": {
       "main": [
-        [],
+        [
+          {
+            "node": "Get Last DB ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Execute Workflow",
@@ -43,17 +49,6 @@
       ]
     },
     "Update Database": {
-      "main": [
-        [
-          {
-            "node": "Rate Limit",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Rate Limit": {
       "main": [
         [
           {
@@ -68,29 +63,7 @@
       "main": [
         [
           {
-            "node": "Can Fetch More?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Can Fetch More?": {
-      "main": [
-        [
-          {
-            "node": "Execute Workflow1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Format New Data": {
-      "main": [
-        [
-          {
-            "node": "Format Data",
+            "node": "Can Fetch More?1",
             "type": "main",
             "index": 0
           }
@@ -101,7 +74,7 @@
       "main": [
         [
           {
-            "node": "Rate Limit Fresh",
+            "node": "Calculate Next ID",
             "type": "main",
             "index": 0
           }
@@ -112,7 +85,7 @@
       "main": [
         [
           {
-            "node": "Check Failed Records",
+            "node": "Run Lasr Record Python Func",
             "type": "main",
             "index": 0
           }
@@ -145,7 +118,7 @@
       "main": [
         [
           {
-            "node": "Code in JavaScript1",
+            "node": "Format Data1",
             "type": "main",
             "index": 0
           }
@@ -174,27 +147,11 @@
         ]
       ]
     },
-    "Code in JavaScript1": {
-      "main": [
-        [
-          {
-            "node": "Return",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Get Last DB ID": {
       "main": [
-        []
-      ]
-    },
-    "Format Data": {
-      "main": [
         [
           {
-            "node": "Format New Data",
+            "node": "Can Fetch More?1",
             "type": "main",
             "index": 0
           }
@@ -216,7 +173,69 @@
       "main": [
         [
           {
+            "node": "Run Lasr Record Python Func",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract max_id": {
+      "main": [
+        [
+          {
             "node": "Check Failed Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can Fetch More?1": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Data1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Lasr Record Python Func": {
+      "main": [
+        [
+          {
+            "node": "Extract max_id",
             "type": "main",
             "index": 0
           }
@@ -227,7 +246,9 @@
   "createdAt": "2025-10-21T18:12:27.609Z",
   "id": "XDwXMWw9FI6dZ517",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "Ufo Scraper",
   "nodes": [
     {
@@ -241,16 +262,16 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 2.5,
       "position": [
-        192,
-        624
+        560,
+        784
       ],
+      "alwaysOutputData": true,
       "credentials": {
         "mySql": {
           "id": "OVkGbY9JBhQV878V",
           "name": "MySQL account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -270,6 +291,16 @@
                 "type": "any",
                 "operation": "exists"
               }
+            },
+            {
+              "id": "e5511041-9504-45fe-9840-b800e9a57a74",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
             }
           ],
           "combinator": "and"
@@ -281,8 +312,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        416,
-        624
+        784,
+        784
       ]
     },
     {
@@ -294,8 +325,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        640,
-        528
+        1008,
+        568
       ]
     },
     {
@@ -314,8 +345,8 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 2.5,
       "position": [
-        1088,
-        448
+        1456,
+        472
       ],
       "credentials": {
         "mySql": {
@@ -327,22 +358,8 @@
     },
     {
       "parameters": {
-        "jsCode": "// Wait 2-5 seconds randomly (rate limiting)\nconst waitTime = Math.floor(Math.random() * 3000) + 2000;\nawait new Promise(resolve => setTimeout(resolve, waitTime));\n\nreturn $input.all();"
-      },
-      "id": "171f69b2-3000-4fc5-8f93-67d8b787662e",
-      "name": "Rate Limit",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1312,
-        528
-      ],
-      "disabled": true
-    },
-    {
-      "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT MAX(id) as max_id FROM UFOS",
+        "query": "SELECT MAX(id) as id FROM UFOS",
         "options": {}
       },
       "id": "3aed82ba-33f1-44c8-be1f-ba119f206773",
@@ -350,8 +367,8 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 2.5,
       "position": [
-        640,
-        768
+        1232,
+        640
       ],
       "credentials": {
         "mySql": {
@@ -362,61 +379,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// Parse HTML to find the last record ID from NUFORC website\nconst html = $input.first().json.data;\n\n// Extract the current month's link and parse the first record ID\n// This is a simplified version - in production you'd use proper HTML parsing\nconst regex = /sighting\\/\\?id=(\\d+)/g;\nconst matches = [...html.matchAll(regex)];\n\nlet lastRecordId = 0;\nif (matches.length > 0) {\n  // Get the highest ID found\n  lastRecordId = Math.max(...matches.map(m => parseInt(m[1])));\n}\n\n// Get the next ID to fetch from previous node\nconst maxDbId = $('Get Last DB ID').first().json.max_id || 0;\nconst nextId = maxDbId + 1;\n\nreturn [{\n  json: {\n    next_id: nextId,\n    last_record_id: lastRecordId,\n    can_fetch: nextId <= lastRecordId\n  }\n}];"
+        "jsCode": "// Read the last id from the \"Get Last DB ID\" node\nconst raw = $('Execute Workflow1').first().json.data.id;\n\n// Extract digits in case id contains other text, then convert to number\nconst lastNum = Number(String(raw).match(/\\d+/)?.[0] || 0);\n\n// Calculate next id\nconst nextId = lastNum + 1;\n\n// Return in n8n format\nreturn [\n  {\n    json: {\n      id: nextId,\n    },\n  },\n];\n"
       },
       "id": "161374b8-105e-420e-8f40-926683097e67",
       "name": "Calculate Next ID",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        864,
-        768
-      ]
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict"
-          },
-          "conditions": [
-            {
-              "id": "can-fetch-more",
-              "leftValue": "={{ $json.can_fetch }}",
-              "rightValue": true,
-              "operator": {
-                "type": "boolean",
-                "operation": "equals",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "2b1ca884-a7f8-4c14-8ff0-6bca7bb158eb",
-      "name": "Can Fetch More?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1088,
-        768
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "// Process extracted data and format for database\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const data = item.json;\n  \n  // Extract description (text between labels and posted date)\n  let description = '';\n  if (data.raw_html) {\n    const htmlText = data.raw_html.replace(/<[^>]*>/g, ' ');\n    const lines = htmlText.split('\\n').map(l => l.trim()).filter(l => l);\n    \n    // Find description between duration and posted\n    let capturing = false;\n    for (const line of lines) {\n      if (line.includes('Duration:')) {\n        capturing = true;\n        continue;\n      }\n      if (line.includes('Posted:')) {\n        break;\n      }\n      if (capturing && !line.match(/^(Occurred|Reported|Location|Shape|Duration):/)) {\n        description += line + ' ';\n      }\n    }\n  }\n  \n  // Build details JSON\n  const details = {};\n  if (data.location) details.location = data.location.trim();\n  if (data.shape) details.shape = data.shape.trim();\n  if (data.duration) details.duration = data.duration.trim();\n  \n  // Get the ID from previous calculation\n  const recordId = $('Calculate Next ID').first().json.next_id;\n  \n  // Format result\n  results.push({\n    json: {\n      id: recordId,\n      title: data.title ? data.title.trim() : '',\n      occurred: data.occurred ? data.occurred.trim() : null,\n      reported: data.reported ? data.reported.trim() : null,\n      details: JSON.stringify(details),\n      description: description.trim(),\n      posted: data.posted ? data.posted.replace('Posted:', '').trim() : null,\n      fetched: new Date().toISOString().slice(0, 19).replace('T', ' '),\n      RAW: data.raw_html || ''\n    }\n  });\n}\n\nreturn results;"
-      },
-      "id": "c5c1af29-1e9b-4d20-ae55-99429b3c5cb5",
-      "name": "Format New Data",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -32,
-        1216
+        2128,
+        640
       ]
     },
     {
@@ -433,23 +404,15 @@
       "type": "n8n-nodes-base.mySql",
       "typeVersion": 2.5,
       "position": [
-        1536,
-        768
+        1904,
+        520
       ],
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "jsCode": "// Wait 2-5 seconds randomly (rate limiting)\nconst waitTime = Math.floor(Math.random() * 3000) + 2000;\nawait new Promise(resolve => setTimeout(resolve, waitTime));\n\nreturn $input.all();"
+      "credentials": {
+        "mySql": {
+          "id": "OVkGbY9JBhQV878V",
+          "name": "MySQL account"
+        }
       },
-      "id": "65eecfc8-ca52-4afe-9786-737b3ffced98",
-      "name": "Rate Limit Fresh",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1760,
-        768
-      ],
       "disabled": true
     },
     {
@@ -457,24 +420,11 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -32,
-        624
+        -112,
+        688
       ],
       "id": "67bcc337-382e-4e6a-9f9f-680e2bf78204",
       "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Process extracted data and format for database\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const data = item.json;\n  \n  // Extract description (text between labels and posted date)\n  let description = '';\n  if (data.raw_html) {\n    const htmlText = data.raw_html.replace(/<[^>]*>/g, ' ');\n    const lines = htmlText.split('\\n').map(l => l.trim()).filter(l => l);\n    \n    // Find description between duration and posted\n    let capturing = false;\n    for (const line of lines) {\n      if (line.includes('Duration:')) {\n        capturing = true;\n        continue;\n      }\n      if (line.includes('Posted:')) {\n        break;\n      }\n      if (capturing && !line.match(/^(Occurred|Reported|Location|Shape|Duration):/)) {\n        description += line + ' ';\n      }\n    }\n  }\n  \n  // Build details JSON\n  const details = {};\n  if (data.location) details.location = data.location.trim();\n  if (data.shape) details.shape = data.shape.trim();\n  if (data.duration) details.duration = data.duration.trim();\n  \n  // Format result\n  results.push({\n    json: {\n      id: data.id || $('Loop Failed Records').item.json.id,\n      title: data.title ? data.title.trim() : '',\n      occurred: data.occurred ? data.occurred.trim() : null,\n      reported: data.reported ? data.reported.trim() : null,\n      details: JSON.stringify(details),\n      description: description.trim(),\n      posted: data.posted ? data.posted.replace('Posted:', '').trim() : null,\n      fetched: new Date().toISOString().slice(0, 19).replace('T', ' '),\n      RAW: data.raw_html || ''\n    }\n  });\n}\n\nreturn results;"
-      },
-      "id": "98550d6b-392f-4753-8d06-fc318fba95e1",
-      "name": "Format Data",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        192,
-        1216
-      ]
     },
     {
       "parameters": {
@@ -497,7 +447,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        864,
+        1232,
         448
       ],
       "id": "e56b376f-e9c7-4851-a3dd-63e40ae95522",
@@ -510,8 +460,8 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -32,
-        992
+        -112,
+        1104
       ],
       "id": "73d25f00-aed8-41dc-acc3-47f6c4ef24aa",
       "name": "When Executed by Another Workflow"
@@ -524,8 +474,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        192,
-        992
+        112,
+        1104
       ],
       "id": "a4cf748b-b06f-4e00-ba3e-4b6b4e72f187",
       "name": "Code in JavaScript"
@@ -548,8 +498,8 @@
       "type": "n8n-nodes-base.htmlExtract",
       "typeVersion": 1,
       "position": [
-        640,
-        992
+        560,
+        1104
       ]
     },
     {
@@ -573,25 +523,11 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1312,
-        768
+        1680,
+        520
       ],
       "id": "6c59f5ad-0f35-4ade-b4ce-587ef3b607c8",
       "name": "Execute Workflow1"
-    },
-    {
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "// n8n Code node compatible - uses ONLY plain JavaScript (no external dependencies)\n\n/**\n * Strip HTML tags and get text content\n * @param {string} html - HTML string\n * @returns {string} - Text content\n */\nfunction stripHtmlTags(html) {\n    return html.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();\n}\n\n/**\n * Extract content between two positions in HTML\n * @param {string} html - HTML string\n * @param {number} start - Start position\n * @param {number} end - End position\n * @returns {string} - Extracted content\n */\nfunction extractBetween(html, start, end) {\n    if (start === -1) return '';\n    if (end === -1) end = html.length;\n    return html.substring(start, end);\n}\n\n/**\n * Extract label-value pairs from bold tags\n * @param {string} contentArea - HTML content area\n * @returns {Object} - Object containing fields\n */\nfunction getLabelValuePairs(contentArea) {\n    const fields = {};\n    \n    // Find all <b>...</b> tags\n    const boldRegex = /<b>(.*?)<\\/b>/gi;\n    let match;\n    \n    while ((match = boldRegex.exec(contentArea)) !== null) {\n        const label = stripHtmlTags(match[1]).replace(/:$/, '').trim().toLowerCase();\n        const afterBoldPos = match.index + match[0].length;\n        \n        // Find the next <b>, <i>, or <br> tag\n        const nextBoldPos = contentArea.indexOf('<b>', afterBoldPos);\n        const nextItalicPos = contentArea.indexOf('<i>', afterBoldPos);\n        const nextBrPos = contentArea.indexOf('<br', afterBoldPos);\n        \n        // Find the closest tag\n        let endPos = contentArea.length;\n        if (nextBoldPos !== -1) endPos = Math.min(endPos, nextBoldPos);\n        if (nextItalicPos !== -1) endPos = Math.min(endPos, nextItalicPos);\n        if (nextBrPos !== -1) endPos = Math.min(endPos, nextBrPos);\n        \n        // Extract value between bold tag and next tag\n        const valueHtml = contentArea.substring(afterBoldPos, endPos);\n        const value = stripHtmlTags(valueHtml).trim();\n        \n        fields[label] = value !== '' ? value : null;\n    }\n    \n    return fields;\n}\n\n/**\n * Process raw HTML and extract UFO sighting data\n * @param {string} RAW - Raw HTML string\n * @returns {Object} - Processed sighting data\n */\nfunction processRaw(RAW) {\n    // The HTML doesn't have a content-area wrapper, work with the raw HTML directly\n    // Extract the main content (everything before the site-content div or use entire HTML)\n    let contentArea = RAW;\n    \n    // Try to extract just the relevant part (before the site-content div if it exists)\n    const siteContentMatch = RAW.match(/([\\s\\S]*?)<div[^>]*id=\"content\"[^>]*class=\"site-content/i);\n    if (siteContentMatch) {\n        contentArea = siteContentMatch[1];\n    }\n    \n    const rpt = {};\n    \n    // Extract title from h1\n    const h1Match = contentArea.match(/<h1[^>]*>(.*?)<\\/h1>/i);\n    rpt.title = h1Match ? stripHtmlTags(h1Match[1]) : null;\n    \n    // Find posted tag (italic tag starting with \"posted\")\n    let postedText = null;\n    const italicRegex = /<i[^>]*>(.*?)<\\/i>/gi;\n    let italicMatch;\n    \n    while ((italicMatch = italicRegex.exec(contentArea)) !== null) {\n        const italicContent = stripHtmlTags(italicMatch[1]);\n        if (italicContent.toLowerCase().startsWith('posted')) {\n            postedText = italicContent;\n            break;\n        }\n    }\n    \n    // Extract label-value pairs\n    const fields = getLabelValuePairs(contentArea);\n    Object.assign(rpt, fields);\n    \n    // Extract description\n    // Find the last bold tag\n    const boldMatches = [...contentArea.matchAll(/<b>.*?<\\/b>/gi)];\n    const lastBoldMatch = boldMatches.length > 0 ? boldMatches[boldMatches.length - 1] : null;\n    \n    let descHtml = '';\n    if (lastBoldMatch) {\n        const afterLastBold = lastBoldMatch.index + lastBoldMatch[0].length;\n        \n        // Find where the posted italic tag starts\n        let beforePosted = contentArea.length;\n        if (postedText) {\n            const postedMatch = contentArea.match(/<i[^>]*>posted.*?<\\/i>/i);\n            if (postedMatch) {\n                beforePosted = postedMatch.index;\n            }\n        }\n        \n        descHtml = contentArea.substring(afterLastBold, beforePosted);\n    }\n    \n    // Clean up description\n    let desc = stripHtmlTags(descHtml);\n    \n    // Remove field values from description\n    for (const v of Object.values(fields)) {\n        if (v) {\n            desc = desc.replace(v, '');\n        }\n    }\n    \n    // Normalize whitespace\n    desc = desc.replace(/\\s+/g, ' ').trim();\n    rpt.description = desc || null;\n    \n    // Extract posted date\n    if (postedText) {\n        if (postedText.toLowerCase().startsWith('posted')) {\n            const parts = postedText.split(' ');\n            postedText = parts.length > 1 ? parts.slice(1).join(' ') : null;\n        }\n        rpt.posted = postedText;\n    } else {\n        rpt.posted = null;\n    }\n    \n    // Force all keys to lowercase\n    const normalizedRpt = {};\n    for (const [k, v] of Object.entries(rpt)) {\n        normalizedRpt[k.toLowerCase()] = v;\n    }\n    \n    // Create details object (all fields except main ones)\n    const keysToRemove = [\n        'title',\n        'occurred',\n        'reported',\n        'description',\n        'posted'\n    ];\n    \n    const details = {};\n    for (const [key, value] of Object.entries(normalizedRpt)) {\n        if (!keysToRemove.includes(key)) {\n            details[key] = value;\n        }\n    }\n    \n    // Return structured object\n    return {\n      id: $('When Executed by Another Workflow').item.json.id,\n      title: normalizedRpt.title,\n      occurred: normalizedRpt.occurred,\n      reported: normalizedRpt.reported,\n      posted: normalizedRpt.posted,\n      details: details,\n      description: normalizedRpt.description,\n      fetched: DateTime.now(),\n      RAW: `<div class=\"content-area clr\" id=\"primary\">\n      ${$json.raw_html}</div>`\n    };\n}\n\n// For n8n Code node usage:\nconst RAW = $json.raw_html;\nconst result = processRaw(RAW);\n// return {res:result};\nreturn {result};\n\n// Export for testing/external use\nif (typeof module !== 'undefined' && module.exports) {\n    module.exports = { processRaw, getLabelValuePairs };\n}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        864,
-        992
-      ],
-      "id": "b7946d5a-1aa2-4fa9-8a0b-8aa4b8213dc5",
-      "name": "Code in JavaScript1"
     },
     {
       "parameters": {
@@ -617,8 +553,8 @@
       "name": "Return",
       "type": "n8n-nodes-base.set",
       "position": [
-        1088,
-        992
+        1232,
+        1104
       ],
       "typeVersion": 3.3
     },
@@ -649,8 +585,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        416,
-        992
+        336,
+        1104
       ]
     },
     {
@@ -663,11 +599,110 @@
       "typeVersion": 1,
       "position": [
         -112,
-        752
+        880
       ],
       "id": "05d3a8e4-fa70-4af5-8f52-8ddd5f830eab",
       "name": "n8n Trigger",
       "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.stdout;\n\n// Split lines by \"\\n\"\nconst parts = text.split('\\n');\n\n// Extract the last number-like line\nconst lastLine = parts.pop().trim();\n\n// Optionally, extract digits only (in case there’s text)\nconst number = lastLine.match(/\\d+/)?.[0] || null;\n\n// Return correctly formatted output for n8n\nreturn [\n  {\n    json: {\n      max_id: number\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        784
+      ],
+      "id": "c68c28dc-06e3-4a78-a798-3707f2d07270",
+      "name": "Extract max_id"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "89c2bcb4-b239-4b15-8fe1-7300a623fcfc",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "={{ $('Extract max_id').item.json.max_id }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1456,
+        664
+      ],
+      "id": "67898f64-64cb-4646-a772-6c69da5c139a",
+      "name": "Can Fetch More?1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        712
+      ],
+      "id": "d4c00544-d65b-41f8-a48d-3b29562b596a",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// n8n Code node compatible - uses ONLY plain JavaScript (no external dependencies)\n\n/**\n * Strip HTML tags and get text content\n * @param {string} html - HTML string\n * @returns {string} - Text content\n */\nfunction stripHtmlTags(html) {\n    return html.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();\n}\n\n/**\n * Extract content between two positions in HTML\n * @param {string} html - HTML string\n * @param {number} start - Start position\n * @param {number} end - End position\n * @returns {string} - Extracted content\n */\nfunction extractBetween(html, start, end) {\n    if (start === -1) return '';\n    if (end === -1) end = html.length;\n    return html.substring(start, end);\n}\n\n/**\n * Extract label-value pairs from bold tags\n * @param {string} contentArea - HTML content area\n * @returns {Object} - Object containing fields\n */\nfunction getLabelValuePairs(contentArea) {\n    const fields = {};\n    \n    // Find all <b>...</b> tags\n    const boldRegex = /<b>(.*?)<\\/b>/gi;\n    let match;\n    \n    while ((match = boldRegex.exec(contentArea)) !== null) {\n        const label = stripHtmlTags(match[1]).replace(/:$/, '').trim().toLowerCase();\n        const afterBoldPos = match.index + match[0].length;\n        \n        // Find the next <b>, <i>, or <br> tag\n        const nextBoldPos = contentArea.indexOf('<b>', afterBoldPos);\n        const nextItalicPos = contentArea.indexOf('<i>', afterBoldPos);\n        const nextBrPos = contentArea.indexOf('<br', afterBoldPos);\n        \n        // Find the closest tag\n        let endPos = contentArea.length;\n        if (nextBoldPos !== -1) endPos = Math.min(endPos, nextBoldPos);\n        if (nextItalicPos !== -1) endPos = Math.min(endPos, nextItalicPos);\n        if (nextBrPos !== -1) endPos = Math.min(endPos, nextBrPos);\n        \n        // Extract value between bold tag and next tag\n        const valueHtml = contentArea.substring(afterBoldPos, endPos);\n        const value = stripHtmlTags(valueHtml).trim();\n        \n        fields[label] = value !== '' ? value : null;\n    }\n    \n    return fields;\n}\n\n/**\n * Process raw HTML and extract UFO sighting data\n * @param {string} RAW - Raw HTML string\n * @returns {Object} - Processed sighting data\n */\nfunction processRaw(RAW) {\n    // The HTML doesn't have a content-area wrapper, work with the raw HTML directly\n    // Extract the main content (everything before the site-content div or use entire HTML)\n    let contentArea = RAW;\n    \n    // Try to extract just the relevant part (before the site-content div if it exists)\n    const siteContentMatch = RAW.match(/([\\s\\S]*?)<div[^>]*id=\"content\"[^>]*class=\"site-content/i);\n    if (siteContentMatch) {\n        contentArea = siteContentMatch[1];\n    }\n    \n    const rpt = {};\n    \n    // Extract title from h1\n    const h1Match = contentArea.match(/<h1[^>]*>(.*?)<\\/h1>/i);\n    rpt.title = h1Match ? stripHtmlTags(h1Match[1]) : null;\n    \n    // Find posted tag (italic tag starting with \"posted\")\n    let postedText = null;\n    const italicRegex = /<i[^>]*>(.*?)<\\/i>/gi;\n    let italicMatch;\n    \n    while ((italicMatch = italicRegex.exec(contentArea)) !== null) {\n        const italicContent = stripHtmlTags(italicMatch[1]);\n        if (italicContent.toLowerCase().startsWith('posted')) {\n            postedText = italicContent;\n            break;\n        }\n    }\n    \n    // Extract label-value pairs\n    const fields = getLabelValuePairs(contentArea);\n    Object.assign(rpt, fields);\n    \n    // Extract description\n    // Find the last bold tag\n    const boldMatches = [...contentArea.matchAll(/<b>.*?<\\/b>/gi)];\n    const lastBoldMatch = boldMatches.length > 0 ? boldMatches[boldMatches.length - 1] : null;\n    \n    let descHtml = '';\n    if (lastBoldMatch) {\n        const afterLastBold = lastBoldMatch.index + lastBoldMatch[0].length;\n        \n        // Find where the posted italic tag starts\n        let beforePosted = contentArea.length;\n        if (postedText) {\n            const postedMatch = contentArea.match(/<i[^>]*>posted.*?<\\/i>/i);\n            if (postedMatch) {\n                beforePosted = postedMatch.index;\n            }\n        }\n        \n        descHtml = contentArea.substring(afterLastBold, beforePosted);\n    }\n    \n    // Clean up description\n    let desc = stripHtmlTags(descHtml);\n    \n    // Remove field values from description\n    for (const v of Object.values(fields)) {\n        if (v) {\n            desc = desc.replace(v, '');\n        }\n    }\n    \n    // Normalize whitespace\n    desc = desc.replace(/\\s+/g, ' ').trim();\n    rpt.description = desc || null;\n    \n    // Extract posted date\n    if (postedText) {\n        if (postedText.toLowerCase().startsWith('posted')) {\n            const parts = postedText.split(' ');\n            postedText = parts.length > 1 ? parts.slice(1).join(' ') : null;\n        }\n        rpt.posted = postedText;\n    } else {\n        rpt.posted = null;\n    }\n    \n    // Force all keys to lowercase\n    const normalizedRpt = {};\n    for (const [k, v] of Object.entries(rpt)) {\n        normalizedRpt[k.toLowerCase()] = v;\n    }\n    \n    // Create details object (all fields except main ones)\n    const keysToRemove = [\n        'title',\n        'occurred',\n        'reported',\n        'description',\n        'posted'\n    ];\n    \n    const details = {};\n    for (const [key, value] of Object.entries(normalizedRpt)) {\n        if (!keysToRemove.includes(key)) {\n            details[key] = value;\n        }\n    }\n    \n    // Return structured object\n    return {\n      id: $('When Executed by Another Workflow').item.json.id,\n      title: normalizedRpt.title,\n      occurred: normalizedRpt.occurred,\n      reported: normalizedRpt.reported,\n      posted: normalizedRpt.posted,\n      details: details,\n      description: normalizedRpt.description,\n      fetched: DateTime.now(),\n      RAW: `<div class=\"content-area clr\" id=\"primary\">\n      ${$json.raw_html}</div>`\n    };\n}\n\n// For n8n Code node usage:\nconst RAW = $json.raw_html;\nconst result = processRaw(RAW);\n// return {res:result};\nreturn {result};\n\n// Export for testing/external use\nif (typeof module !== 'undefined' && module.exports) {\n    module.exports = { processRaw, getLabelValuePairs };\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        1104
+      ],
+      "id": "b7946d5a-1aa2-4fa9-8a0b-8aa4b8213dc5",
+      "name": "Format Data1"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        1104
+      ],
+      "id": "6b17169f-5bb9-4a59-b1c7-95c56cb7ef29",
+      "name": "Wait",
+      "webhookId": "f0917581-0fdc-47af-b870-064a45540338"
+    },
+    {
+      "parameters": {
+        "command": "/home/taurien_l/Desktop/Lab/UFOS/.venv/bin/python -c \"import sys; sys.path.append('/home/taurien_l/Desktop/Lab/UFOS/stage3'); from fetchUfo import last_record_id; print(last_record_id())\"\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        112,
+        784
+      ],
+      "id": "98c3f459-1977-4f6c-8f1c-5368f8eb4982",
+      "name": "Run Lasr Record Python Func"
     }
   ],
   "pinData": {},
@@ -686,6 +721,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-21T19:14:41.000Z",
-  "versionId": "8348d6f8-3389-42b0-bcc2-b847a0ebdb25"
+  "updatedAt": "2025-10-22T16:10:10.000Z",
+  "versionId": "88b737c2-351d-4e47-ae1d-6b4e1781af5b"
 }
