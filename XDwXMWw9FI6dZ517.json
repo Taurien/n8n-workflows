@@ -41,7 +41,7 @@
         ],
         [
           {
-            "node": "Execute Workflow",
+            "node": "Fetch Ufo",
             "type": "main",
             "index": 0
           }
@@ -85,29 +85,7 @@
       "main": [
         [
           {
-            "node": "Run Lasr Record Python Func",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When Executed by Another Workflow": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript": {
-      "main": [
-        [
-          {
-            "node": "Fetch UFO",
+            "node": "Run Last Record Python Func",
             "type": "main",
             "index": 0
           }
@@ -118,29 +96,7 @@
       "main": [
         [
           {
-            "node": "Format Data1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute Workflow1": {
-      "main": [
-        [
-          {
-            "node": "Insert Database",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute Workflow": {
-      "main": [
-        [
-          {
-            "node": "Update Database",
+            "node": "Format Data",
             "type": "main",
             "index": 0
           }
@@ -173,7 +129,7 @@
       "main": [
         [
           {
-            "node": "Run Lasr Record Python Func",
+            "node": "Run Last Record Python Func",
             "type": "main",
             "index": 0
           }
@@ -195,7 +151,7 @@
       "main": [
         [
           {
-            "node": "Execute Workflow1",
+            "node": "Fetch Ovni",
             "type": "main",
             "index": 0
           }
@@ -203,17 +159,6 @@
         [
           {
             "node": "No Operation, do nothing",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Format Data1": {
-      "main": [
-        [
-          {
-            "node": "Wait",
             "type": "main",
             "index": 0
           }
@@ -231,11 +176,66 @@
         ]
       ]
     },
-    "Run Lasr Record Python Func": {
+    "Run Last Record Python Func": {
       "main": [
         [
           {
             "node": "Extract max_id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Ufo": {
+      "main": [
+        [
+          {
+            "node": "Update Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Ovni": {
+      "main": [
+        [
+          {
+            "node": "Insert Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ufo Fetcher": {
+      "main": [
+        [
+          {
+            "node": "Random User Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random User Agent": {
+      "main": [
+        [
+          {
+            "node": "Fetch UFO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Data": {
+      "main": [
+        [
+          {
+            "node": "Wait",
             "type": "main",
             "index": 0
           }
@@ -379,7 +379,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Read the last id from the \"Get Last DB ID\" node\nconst raw = $('Execute Workflow1').first().json.data.id;\n\n// Extract digits in case id contains other text, then convert to number\nconst lastNum = Number(String(raw).match(/\\d+/)?.[0] || 0);\n\n// Calculate next id\nconst nextId = lastNum + 1;\n\n// Return in n8n format\nreturn [\n  {\n    json: {\n      id: nextId,\n    },\n  },\n];\n"
+        "jsCode": "// Read the last id from the \"Get Last DB ID\" node\nconst raw = $('Fetch Ovni').first().json.data.id;\n\n// Extract digits in case id contains other text, then convert to number\nconst lastNum = Number(String(raw).match(/\\d+/)?.[0] || 0);\n\n// Calculate next id\nconst nextId = lastNum + 1;\n\n// Return in n8n format\nreturn [\n  {\n    json: {\n      id: nextId,\n    },\n  },\n];\n"
       },
       "id": "161374b8-105e-420e-8f40-926683097e67",
       "name": "Calculate Next ID",
@@ -428,60 +428,6 @@
     },
     {
       "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "mode": "id",
-          "value": "={{ $workflow.id }}",
-          "cachedResultName": "={{ $workflow.id }}"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.2,
-      "position": [
-        1232,
-        448
-      ],
-      "id": "e56b376f-e9c7-4851-a3dd-63e40ae95522",
-      "name": "Execute Workflow"
-    },
-    {
-      "parameters": {
-        "inputSource": "passthrough"
-      },
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        -112,
-        1104
-      ],
-      "id": "73d25f00-aed8-41dc-acc3-47f6c4ef24aa",
-      "name": "When Executed by Another Workflow"
-    },
-    {
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "const user_agents = [\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36 Edg/96.0.1054.29\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36\",\n    \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36\",\n    \"Mozilla/5.0 (iPad; CPU OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/96.0.4664.53 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.2420.81\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (X11; Linux i686; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (iPad; CPU OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36\",\n]\n\nconst randomUA = user_agents[Math.floor(Math.random() * user_agents.length)];\n\nreturn {\n  json: {\n    id: $json.id,\n    userAgent: randomUA\n}}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        112,
-        1104
-      ],
-      "id": "a4cf748b-b06f-4e00-ba3e-4b6b4e72f187",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
         "extractionValues": {
           "values": [
             {
@@ -501,33 +447,6 @@
         560,
         1104
       ]
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "mode": "id",
-          "value": "={{ $workflow.id }}",
-          "cachedResultName": "={{ $workflow.id }}"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.2,
-      "position": [
-        1680,
-        520
-      ],
-      "id": "6c59f5ad-0f35-4ade-b4ce-587ef3b607c8",
-      "name": "Execute Workflow1"
     },
     {
       "parameters": {
@@ -665,20 +584,6 @@
     },
     {
       "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "// n8n Code node compatible - uses ONLY plain JavaScript (no external dependencies)\n\n/**\n * Strip HTML tags and get text content\n * @param {string} html - HTML string\n * @returns {string} - Text content\n */\nfunction stripHtmlTags(html) {\n    return html.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();\n}\n\n/**\n * Extract content between two positions in HTML\n * @param {string} html - HTML string\n * @param {number} start - Start position\n * @param {number} end - End position\n * @returns {string} - Extracted content\n */\nfunction extractBetween(html, start, end) {\n    if (start === -1) return '';\n    if (end === -1) end = html.length;\n    return html.substring(start, end);\n}\n\n/**\n * Extract label-value pairs from bold tags\n * @param {string} contentArea - HTML content area\n * @returns {Object} - Object containing fields\n */\nfunction getLabelValuePairs(contentArea) {\n    const fields = {};\n    \n    // Find all <b>...</b> tags\n    const boldRegex = /<b>(.*?)<\\/b>/gi;\n    let match;\n    \n    while ((match = boldRegex.exec(contentArea)) !== null) {\n        const label = stripHtmlTags(match[1]).replace(/:$/, '').trim().toLowerCase();\n        const afterBoldPos = match.index + match[0].length;\n        \n        // Find the next <b>, <i>, or <br> tag\n        const nextBoldPos = contentArea.indexOf('<b>', afterBoldPos);\n        const nextItalicPos = contentArea.indexOf('<i>', afterBoldPos);\n        const nextBrPos = contentArea.indexOf('<br', afterBoldPos);\n        \n        // Find the closest tag\n        let endPos = contentArea.length;\n        if (nextBoldPos !== -1) endPos = Math.min(endPos, nextBoldPos);\n        if (nextItalicPos !== -1) endPos = Math.min(endPos, nextItalicPos);\n        if (nextBrPos !== -1) endPos = Math.min(endPos, nextBrPos);\n        \n        // Extract value between bold tag and next tag\n        const valueHtml = contentArea.substring(afterBoldPos, endPos);\n        const value = stripHtmlTags(valueHtml).trim();\n        \n        fields[label] = value !== '' ? value : null;\n    }\n    \n    return fields;\n}\n\n/**\n * Process raw HTML and extract UFO sighting data\n * @param {string} RAW - Raw HTML string\n * @returns {Object} - Processed sighting data\n */\nfunction processRaw(RAW) {\n    // The HTML doesn't have a content-area wrapper, work with the raw HTML directly\n    // Extract the main content (everything before the site-content div or use entire HTML)\n    let contentArea = RAW;\n    \n    // Try to extract just the relevant part (before the site-content div if it exists)\n    const siteContentMatch = RAW.match(/([\\s\\S]*?)<div[^>]*id=\"content\"[^>]*class=\"site-content/i);\n    if (siteContentMatch) {\n        contentArea = siteContentMatch[1];\n    }\n    \n    const rpt = {};\n    \n    // Extract title from h1\n    const h1Match = contentArea.match(/<h1[^>]*>(.*?)<\\/h1>/i);\n    rpt.title = h1Match ? stripHtmlTags(h1Match[1]) : null;\n    \n    // Find posted tag (italic tag starting with \"posted\")\n    let postedText = null;\n    const italicRegex = /<i[^>]*>(.*?)<\\/i>/gi;\n    let italicMatch;\n    \n    while ((italicMatch = italicRegex.exec(contentArea)) !== null) {\n        const italicContent = stripHtmlTags(italicMatch[1]);\n        if (italicContent.toLowerCase().startsWith('posted')) {\n            postedText = italicContent;\n            break;\n        }\n    }\n    \n    // Extract label-value pairs\n    const fields = getLabelValuePairs(contentArea);\n    Object.assign(rpt, fields);\n    \n    // Extract description\n    // Find the last bold tag\n    const boldMatches = [...contentArea.matchAll(/<b>.*?<\\/b>/gi)];\n    const lastBoldMatch = boldMatches.length > 0 ? boldMatches[boldMatches.length - 1] : null;\n    \n    let descHtml = '';\n    if (lastBoldMatch) {\n        const afterLastBold = lastBoldMatch.index + lastBoldMatch[0].length;\n        \n        // Find where the posted italic tag starts\n        let beforePosted = contentArea.length;\n        if (postedText) {\n            const postedMatch = contentArea.match(/<i[^>]*>posted.*?<\\/i>/i);\n            if (postedMatch) {\n                beforePosted = postedMatch.index;\n            }\n        }\n        \n        descHtml = contentArea.substring(afterLastBold, beforePosted);\n    }\n    \n    // Clean up description\n    let desc = stripHtmlTags(descHtml);\n    \n    // Remove field values from description\n    for (const v of Object.values(fields)) {\n        if (v) {\n            desc = desc.replace(v, '');\n        }\n    }\n    \n    // Normalize whitespace\n    desc = desc.replace(/\\s+/g, ' ').trim();\n    rpt.description = desc || null;\n    \n    // Extract posted date\n    if (postedText) {\n        if (postedText.toLowerCase().startsWith('posted')) {\n            const parts = postedText.split(' ');\n            postedText = parts.length > 1 ? parts.slice(1).join(' ') : null;\n        }\n        rpt.posted = postedText;\n    } else {\n        rpt.posted = null;\n    }\n    \n    // Force all keys to lowercase\n    const normalizedRpt = {};\n    for (const [k, v] of Object.entries(rpt)) {\n        normalizedRpt[k.toLowerCase()] = v;\n    }\n    \n    // Create details object (all fields except main ones)\n    const keysToRemove = [\n        'title',\n        'occurred',\n        'reported',\n        'description',\n        'posted'\n    ];\n    \n    const details = {};\n    for (const [key, value] of Object.entries(normalizedRpt)) {\n        if (!keysToRemove.includes(key)) {\n            details[key] = value;\n        }\n    }\n    \n    // Return structured object\n    return {\n      id: $('When Executed by Another Workflow').item.json.id,\n      title: normalizedRpt.title,\n      occurred: normalizedRpt.occurred,\n      reported: normalizedRpt.reported,\n      posted: normalizedRpt.posted,\n      details: details,\n      description: normalizedRpt.description,\n      fetched: DateTime.now(),\n      RAW: `<div class=\"content-area clr\" id=\"primary\">\n      ${$json.raw_html}</div>`\n    };\n}\n\n// For n8n Code node usage:\nconst RAW = $json.raw_html;\nconst result = processRaw(RAW);\n// return {res:result};\nreturn {result};\n\n// Export for testing/external use\nif (typeof module !== 'undefined' && module.exports) {\n    module.exports = { processRaw, getLabelValuePairs };\n}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        784,
-        1104
-      ],
-      "id": "b7946d5a-1aa2-4fa9-8a0b-8aa4b8213dc5",
-      "name": "Format Data1"
-    },
-    {
-      "parameters": {
         "amount": 2
       },
       "type": "n8n-nodes-base.wait",
@@ -702,7 +607,102 @@
         784
       ],
       "id": "98c3f459-1977-4f6c-8f1c-5368f8eb4982",
-      "name": "Run Lasr Record Python Func"
+      "name": "Run Last Record Python Func"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}",
+          "cachedResultName": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1232,
+        448
+      ],
+      "id": "e56b376f-e9c7-4851-a3dd-63e40ae95522",
+      "name": "Fetch Ufo"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}",
+          "cachedResultName": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1680,
+        520
+      ],
+      "id": "6c59f5ad-0f35-4ade-b4ce-587ef3b607c8",
+      "name": "Fetch Ovni"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -112,
+        1104
+      ],
+      "id": "73d25f00-aed8-41dc-acc3-47f6c4ef24aa",
+      "name": "Ufo Fetcher"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const user_agents = [\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36 Edg/96.0.1054.29\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36\",\n    \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36\",\n    \"Mozilla/5.0 (iPad; CPU OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/96.0.4664.53 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.2420.81\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36\",\n    \"Mozilla/5.0 (X11; Linux i686; rv:124.0) Gecko/20100101 Firefox/124.0\",\n    \"Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36\",\n    \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (iPad; CPU OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1\",\n    \"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36\",\n]\n\nconst randomUA = user_agents[Math.floor(Math.random() * user_agents.length)];\n\nreturn {\n  json: {\n    id: $json.id,\n    userAgent: randomUA\n}}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        112,
+        1104
+      ],
+      "id": "a4cf748b-b06f-4e00-ba3e-4b6b4e72f187",
+      "name": "Random User Agent"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// n8n Code node compatible - uses ONLY plain JavaScript (no external dependencies)\n\n/**\n * Strip HTML tags and get text content\n * @param {string} html - HTML string\n * @returns {string} - Text content\n */\nfunction stripHtmlTags(html) {\n    return html.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();\n}\n\n/**\n * Extract content between two positions in HTML\n * @param {string} html - HTML string\n * @param {number} start - Start position\n * @param {number} end - End position\n * @returns {string} - Extracted content\n */\nfunction extractBetween(html, start, end) {\n    if (start === -1) return '';\n    if (end === -1) end = html.length;\n    return html.substring(start, end);\n}\n\n/**\n * Extract label-value pairs from bold tags\n * @param {string} contentArea - HTML content area\n * @returns {Object} - Object containing fields\n */\nfunction getLabelValuePairs(contentArea) {\n    const fields = {};\n    \n    // Find all <b>...</b> tags\n    const boldRegex = /<b>(.*?)<\\/b>/gi;\n    let match;\n    \n    while ((match = boldRegex.exec(contentArea)) !== null) {\n        const label = stripHtmlTags(match[1]).replace(/:$/, '').trim().toLowerCase();\n        const afterBoldPos = match.index + match[0].length;\n        \n        // Find the next <b>, <i>, or <br> tag\n        const nextBoldPos = contentArea.indexOf('<b>', afterBoldPos);\n        const nextItalicPos = contentArea.indexOf('<i>', afterBoldPos);\n        const nextBrPos = contentArea.indexOf('<br', afterBoldPos);\n        \n        // Find the closest tag\n        let endPos = contentArea.length;\n        if (nextBoldPos !== -1) endPos = Math.min(endPos, nextBoldPos);\n        if (nextItalicPos !== -1) endPos = Math.min(endPos, nextItalicPos);\n        if (nextBrPos !== -1) endPos = Math.min(endPos, nextBrPos);\n        \n        // Extract value between bold tag and next tag\n        const valueHtml = contentArea.substring(afterBoldPos, endPos);\n        const value = stripHtmlTags(valueHtml).trim();\n        \n        fields[label] = value !== '' ? value : null;\n    }\n    \n    return fields;\n}\n\n/**\n * Process raw HTML and extract UFO sighting data\n * @param {string} RAW - Raw HTML string\n * @returns {Object} - Processed sighting data\n */\nfunction processRaw(RAW) {\n    // The HTML doesn't have a content-area wrapper, work with the raw HTML directly\n    // Extract the main content (everything before the site-content div or use entire HTML)\n    let contentArea = RAW;\n    \n    // Try to extract just the relevant part (before the site-content div if it exists)\n    const siteContentMatch = RAW.match(/([\\s\\S]*?)<div[^>]*id=\"content\"[^>]*class=\"site-content/i);\n    if (siteContentMatch) {\n        contentArea = siteContentMatch[1];\n    }\n    \n    const rpt = {};\n    \n    // Extract title from h1\n    const h1Match = contentArea.match(/<h1[^>]*>(.*?)<\\/h1>/i);\n    rpt.title = h1Match ? stripHtmlTags(h1Match[1]) : null;\n    \n    // Find posted tag (italic tag starting with \"posted\")\n    let postedText = null;\n    const italicRegex = /<i[^>]*>(.*?)<\\/i>/gi;\n    let italicMatch;\n    \n    while ((italicMatch = italicRegex.exec(contentArea)) !== null) {\n        const italicContent = stripHtmlTags(italicMatch[1]);\n        if (italicContent.toLowerCase().startsWith('posted')) {\n            postedText = italicContent;\n            break;\n        }\n    }\n    \n    // Extract label-value pairs\n    const fields = getLabelValuePairs(contentArea);\n    Object.assign(rpt, fields);\n    \n    // Extract description\n    // Find the last bold tag\n    const boldMatches = [...contentArea.matchAll(/<b>.*?<\\/b>/gi)];\n    const lastBoldMatch = boldMatches.length > 0 ? boldMatches[boldMatches.length - 1] : null;\n    \n    let descHtml = '';\n    if (lastBoldMatch) {\n        const afterLastBold = lastBoldMatch.index + lastBoldMatch[0].length;\n        \n        // Find where the posted italic tag starts\n        let beforePosted = contentArea.length;\n        if (postedText) {\n            const postedMatch = contentArea.match(/<i[^>]*>posted.*?<\\/i>/i);\n            if (postedMatch) {\n                beforePosted = postedMatch.index;\n            }\n        }\n        \n        descHtml = contentArea.substring(afterLastBold, beforePosted);\n    }\n    \n    // Clean up description\n    let desc = stripHtmlTags(descHtml);\n    \n    // Remove field values from description\n    for (const v of Object.values(fields)) {\n        if (v) {\n            desc = desc.replace(v, '');\n        }\n    }\n    \n    // Normalize whitespace\n    desc = desc.replace(/\\s+/g, ' ').trim();\n    rpt.description = desc || null;\n    \n    // Extract posted date\n    if (postedText) {\n        if (postedText.toLowerCase().startsWith('posted')) {\n            const parts = postedText.split(' ');\n            postedText = parts.length > 1 ? parts.slice(1).join(' ') : null;\n        }\n        rpt.posted = postedText;\n    } else {\n        rpt.posted = null;\n    }\n    \n    // Force all keys to lowercase\n    const normalizedRpt = {};\n    for (const [k, v] of Object.entries(rpt)) {\n        normalizedRpt[k.toLowerCase()] = v;\n    }\n    \n    // Create details object (all fields except main ones)\n    const keysToRemove = [\n        'title',\n        'occurred',\n        'reported',\n        'description',\n        'posted'\n    ];\n    \n    const details = {};\n    for (const [key, value] of Object.entries(normalizedRpt)) {\n        if (!keysToRemove.includes(key)) {\n            details[key] = value;\n        }\n    }\n    \n    // Return structured object\n    return {\n      id: $('Ufo Fetcher').item.json.id,\n      title: normalizedRpt.title,\n      occurred: normalizedRpt.occurred,\n      reported: normalizedRpt.reported,\n      posted: normalizedRpt.posted,\n      details: details,\n      description: normalizedRpt.description,\n      fetched: DateTime.now(),\n      RAW: `<div class=\"content-area clr\" id=\"primary\">\n      ${$json.raw_html}</div>`\n    };\n}\n\n// For n8n Code node usage:\nconst RAW = $json.raw_html;\nconst result = processRaw(RAW);\n// return {res:result};\nreturn {result};\n\n// Export for testing/external use\nif (typeof module !== 'undefined' && module.exports) {\n    module.exports = { processRaw, getLabelValuePairs };\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        1104
+      ],
+      "id": "b7946d5a-1aa2-4fa9-8a0b-8aa4b8213dc5",
+      "name": "Format Data"
     }
   ],
   "pinData": {},
@@ -721,6 +721,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-22T16:10:10.000Z",
-  "versionId": "88b737c2-351d-4e47-ae1d-6b4e1781af5b"
+  "updatedAt": "2025-10-23T17:07:52.000Z",
+  "versionId": "e67a5050-6721-4698-8b5f-db705697d491"
 }
